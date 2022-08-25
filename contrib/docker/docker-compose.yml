@@ -43,7 +43,6 @@ services:
     #command: 'python -m pdb /usr/lib/ckan/venv/bin/ckan --config /etc/ckan/production.ini run --host 0.0.0.0 --passthrough-errors'
     #tty: true
     #stdin_open: true
-
     volumes:
       - ckan_config:/etc/ckan
       - ckan_home:/usr/lib/ckan
@@ -84,7 +83,7 @@ services:
 
   redis:
     container_name: redis
-    image: redis:6.2
+    image: redis:7.0.4
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "redis-cli", "-e", "QUIT"]

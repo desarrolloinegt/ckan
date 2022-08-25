@@ -9,7 +9,7 @@ sandbox/*
 dist
 .mypy_cache
 .eggs/*
-
+.volumes
 # pylons
 development.ini*
 sstore/*
