@@ -14,6 +14,7 @@ services:
     container_name: ckan
     build:
       context: ../../
+    image: desarrolloinegt/ckan:1.0
     depends_on:
       db:
         condition: service_healthy
@@ -23,6 +24,11 @@ services:
         condition: service_healthy
     ports:
       - "0.0.0.0:${CKAN_PORT}:5000"
+    links:
+      - db
+      - solr
+      - redis
+      - datapusher
     environment:
       # Defaults work with linked containers, change to use own Postgres, SolR, Redis or Datapusher
       - CKAN_SQLALCHEMY_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}/ckan
@@ -50,13 +56,16 @@ services:
 
   datapusher:
     container_name: datapusher
-    image: clementmouchet/datapusher
+    image: desarrolloinegt/ckan-datapusher
+    build:
+      context: ./datapusher/
     ports:
       - "8800:8800"
     restart: unless-stopped
 
   db:
     container_name: ${POSTGRES_HOST}
+    image: desarrolloinegt/ckan-posgresql
     build:
       context: ../../
       dockerfile: contrib/docker/postgresql/Dockerfile  
@@ -72,6 +81,7 @@ services:
 
   solr:
     container_name: solr
+    image: desarrolloinegt/ckan-solr:1.0
     build:
       context: ../../
       dockerfile: contrib/docker/solr/Dockerfile
@@ -83,7 +93,9 @@ services:
 
   redis:
     container_name: redis
-    image: redis:7.0.4
+    image: desarrolloinegt/ckan-redis
+    build:
+      context: ./datapusher/
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "redis-cli", "-e", "QUIT"]
