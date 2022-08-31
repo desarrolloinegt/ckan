@@ -76,6 +76,7 @@ RUN ckan-pip3 install -U pip && \
 #plugin hierarchy
 RUN $CKAN_VENV/bin/pip install -e "git+https://github.com/davidread/ckanext-hierarchy.git#egg=ckanext-hierarchy"
 RUN $CKAN_VENV/bin/pip install -r ckanext-hierarchy/requirements.txt
+RUN $CKAN_VENV/bin/python3  $CKAN_VENV/ckanext-hierarchy/setup.py
 #   hierarchy_display hierarchy_form will be hard-coded in the configuration template (ckan.plugins)
 #plugin pages
 RUN $CKAN_VENV/bin/pip install -e 'git+https://github.com/ckan/ckanext-pages.git#egg=ckanext-pages' 
