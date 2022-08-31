@@ -47,6 +47,8 @@ services:
       - CKAN_SMTP_USER={CKAN_SMTP_USER}
       - CKAN_SMTP_PASSWORD={CKAN_SMTP_PASSWORD}
       - CKAN_SMTP_MAIL_FROM={CKAN_SMTP_MAIL_FROM}
+      - CKAN_SITE_TITLE= {SITE_TITLE}
+      - CKAN_DESCRIPTION= {SITE_DESCRIPTION}
       
     restart: unless-stopped
     healthcheck:
@@ -101,7 +103,7 @@ services:
     container_name: redis
     image: desarrolloinegt/ckan-redis
     build:
-      context: ./datapusher/
+      context: ./redis/
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "redis-cli", "-e", "QUIT"]
