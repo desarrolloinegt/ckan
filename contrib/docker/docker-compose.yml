@@ -65,7 +65,7 @@ services:
 
   db:
     container_name: ${POSTGRES_HOST}
-    image: desarrolloinegt/ckan-posgresql
+    image: desarrolloinegt/ckan-postgresql
     build:
       context: ../../
       dockerfile: contrib/docker/postgresql/Dockerfile  

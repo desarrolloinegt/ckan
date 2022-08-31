@@ -35,6 +35,7 @@ RUN apt-get -q -y update \
         vim \
         wget \
         curl \
+        gettext-base \
     && apt-get -q clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -69,6 +70,24 @@ RUN ckan-pip3 install -U pip && \
     cp -v $CKAN_VENV/src/ckan/contrib/docker/ckan-entrypoint.sh /ckan-entrypoint.sh && \
     chmod +x /ckan-entrypoint.sh && \
     chown -R ckan:ckan $CKAN_HOME $CKAN_VENV $CKAN_CONFIG $CKAN_STORAGE_PATH
+
+#Installing basic ckan plugins
+
+#plugin hierarchy
+RUN $CKAN_VENV/bin/pip install -e "git+https://github.com/davidread/ckanext-hierarchy.git#egg=ckanext-hierarchy"
+RUN $CKAN_VENV/bin/pip install -r ckanext-hierarchy/requirements.txt
+#   hierarchy_display hierarchy_form will be hard-coded in the configuration template (ckan.plugins)
+#plugin pages
+RUN $CKAN_VENV/bin/pip install -e 'git+https://github.com/ckan/ckanext-pages.git#egg=ckanext-pages' 
+RUN $CKAN_VENV/bin/python3  $CKAN_VENV/ckanext-pages/setup.py
+#  pages will be hard-coded in the configuration template (ckan.plugins)
+
+#plugin xloader
+RUN $CKAN_VENV/bin/pip install ckanext-xloader
+RUN $CKAN_VENV/bin/pip install -r https://raw.githubusercontent.com/ckan/ckanext-xloader/master/requirements.txt
+RUN $CKAN_VENV/bin/pip install -U requests[security]
+#  xloader will be hard-coded in the configuration template (ckan.plugins)
+
 
 FROM base AS test
 RUN ckan-pip3 install -r $CKAN_VENV/src/ckan/dev-requirements.txt && \
