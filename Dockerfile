@@ -1,6 +1,5 @@
 # See CKAN docs on installation from Docker Compose on usage
 FROM ubuntu:focal AS base
-MAINTAINER Open Knowledge
 
 # Set timezone
 ENV TZ=UTC
@@ -74,19 +73,18 @@ RUN ckan-pip3 install -U pip && \
 #Installing basic ckan plugins
 
 #plugin hierarchy
-RUN $CKAN_VENV/bin/pip install -e "git+https://github.com/davidread/ckanext-hierarchy.git#egg=ckanext-hierarchy"
-RUN $CKAN_VENV/bin/pip install -r ckanext-hierarchy/requirements.txt
-RUN $CKAN_VENV/bin/python3  $CKAN_VENV/ckanext-hierarchy/setup.py
+RUN $CKAN_VENV/bin/pip install -e "git+https://github.com/davidread/ckanext-hierarchy.git#egg=ckanext-hierarchy"  && \
+    $CKAN_VENV/bin/pip install -r $CKAN_VENV/src/ckanext-hierarchy/requirements.txt
 #   hierarchy_display hierarchy_form will be hard-coded in the configuration template (ckan.plugins)
+
 #plugin pages
 RUN $CKAN_VENV/bin/pip install -e 'git+https://github.com/ckan/ckanext-pages.git#egg=ckanext-pages' 
-RUN $CKAN_VENV/bin/python3  $CKAN_VENV/ckanext-pages/setup.py
 #  pages will be hard-coded in the configuration template (ckan.plugins)
 
 #plugin xloader
-RUN $CKAN_VENV/bin/pip install ckanext-xloader
-RUN $CKAN_VENV/bin/pip install -r https://raw.githubusercontent.com/ckan/ckanext-xloader/master/requirements.txt
-RUN $CKAN_VENV/bin/pip install -U requests[security]
+RUN $CKAN_VENV/bin/pip install ckanext-xloader  && \
+    $CKAN_VENV/bin/pip install -r https://raw.githubusercontent.com/ckan/ckanext-xloader/master/requirements.txt  && \
+    $CKAN_VENV/bin/pip install -U requests[security]
 #  xloader will be hard-coded in the configuration template (ckan.plugins)
 
 
