@@ -14,7 +14,7 @@ services:
     container_name: ckan
     build:
       context: ../../
-    image: desarrolloinegt/ckan:1.0
+    image: desarrolloinegt/ckan:latest
     depends_on:
       db:
         condition: service_healthy
@@ -64,7 +64,7 @@ services:
 
   datapusher:
     container_name: datapusher
-    image: desarrolloinegt/ckan-datapusher
+    image: desarrolloinegt/ckan-datapusher:latest
     build:
       context: ./datapusher/
     ports:
@@ -73,7 +73,7 @@ services:
 
   db:
     container_name: ${POSTGRES_HOST}
-    image: desarrolloinegt/ckan-postgresql
+    image: desarrolloinegt/ckan-postgresql:latest
     build:
       context: ../../
       dockerfile: contrib/docker/postgresql/Dockerfile  
@@ -89,7 +89,7 @@ services:
 
   solr:
     container_name: solr
-    image: desarrolloinegt/ckan-solr:1.0
+    image: desarrolloinegt/ckan-solr:latest
     build:
       context: ../../
       dockerfile: contrib/docker/solr/Dockerfile
@@ -101,7 +101,7 @@ services:
 
   redis:
     container_name: redis
-    image: desarrolloinegt/ckan-redis
+    image: desarrolloinegt/ckan-redis:latest
     build:
       context: ./redis/
     restart: unless-stopped
